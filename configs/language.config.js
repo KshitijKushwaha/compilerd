@@ -1,6 +1,6 @@
-const { CPP, C, PYTHON, JAVA, NODEJS, RUBY, PROMPTV1, PROMPTV2 } = require('../enums/supportedLanguages')
-const ONE_MB = 1024 // ulimit uses Kilobyte as base unit
-const ALLOWED_RAM = process.env.ALLOWED_RAM || 512
+const { CPP, C, PYTHON, JAVA, NODEJS, RUBY, PROMPTV1, PROMPTV2, RUST, GO, PHP, CSHARP, SWIFT, KOTLIN, FORTRAN } = require('../enums/supportedLanguages');
+const ONE_MB = 1024; // ulimit uses Kilobyte as base unit
+const ALLOWED_RAM = process.env.ALLOWED_RAM || 512;
 
 const LANGUAGES_CONFIG = {
     [C]: {
@@ -36,7 +36,7 @@ const LANGUAGES_CONFIG = {
         run: 'node solution.js',
         timeout: 10,
         filename: 'solution.js',
-        memory: 786432, // Node.js v20 requires more initial memory, so initialize it to around 780MB (1.5 * 512MB). This value is higher than the previous 512MB but below 1GB to ensure ulimit catches excessive memory use without the GCR container being killed.
+        memory: 786432,
     },
     [RUBY]: {
         compile: 'ruby -c solution.rb',
@@ -51,6 +51,49 @@ const LANGUAGES_CONFIG = {
     [PROMPTV2]: {
         model: 'gpt-3.5-turbo-1106',
     },
-}
+    [RUST]: {
+        compile: 'rustc solution.rs',
+        run: './solution',
+        timeout: 10,
+        filename: 'solution.rs',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
+    [GO]: {
+        compile: 'go build -o solution solution.go',
+        run: './solution',
+        timeout: 10,
+        filename: 'solution.go',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
+    [PHP]: {
+        compile: null,
+        run: 'php -f solution.php',
+        timeout: 10,
+        filename: 'solution.php',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
+    [CSHARP]: {
+        compile: 'mcs -out:solution.exe solution.cs',
+        run: 'mono solution.exe',
+        timeout: 10,
+        filename: 'solution.cs',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
+    [SWIFT]: {
+        compile: 'swiftc -o solution solution.swift',
+        run: './solution',
+        timeout: 10,
+        filename: 'solution.swift',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
+    [KOTLIN]: {
+        compile: 'kotlinc solution.kt -include-runtime -d solution.jar',
+        run: 'java -jar solution.jar',
+        timeout: 10,
+        filename: 'solution.kt',
+        memory: ALLOWED_RAM * ONE_MB,
+    },
 
-module.exports = { LANGUAGES_CONFIG }
+};
+
+module.exports = { LANGUAGES_CONFIG };
