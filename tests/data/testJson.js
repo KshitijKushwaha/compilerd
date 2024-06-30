@@ -298,6 +298,221 @@ const testCases = [
             error: 0,
         },
     },
-]
+
+
+    {
+        name: 'rust : hello world',
+        reqObject: {
+            language: 'rust',
+            script: 'fn main() { println!("hello world"); }',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'rust : print stdin',
+        reqObject: {
+            language: 'rust',
+            script: `
+use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        println!("{}", line.unwrap());
+    }
+}`,
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+
+    {
+        name: 'go : hello world',
+        reqObject: {
+            language: 'go',
+            script: `
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("hello world")
+}`,
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'go : print stdin',
+        reqObject: {
+            language: 'go',
+            script: `
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    scanner := bufio.NewScanner(os.Stdin)
+    for scanner.Scan() {
+        fmt.Println(scanner.Text())
+    }
+}`,
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+
+    {
+        name: 'php : hello world',
+        reqObject: {
+            language: 'php',
+            script: '<?php echo "hello world"; ?>',
+        },
+        expectedResponse: {
+            val: 'hello world',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'php : print stdin',
+        reqObject: {
+            language: 'php',
+            script: `
+<?php
+$input = trim(fgets(STDIN));
+echo $input;
+?>`,
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3',
+            status: 200,
+            error: 0,
+        },
+    },
+
+    {
+        name: 'csharp : hello world',
+        reqObject: {
+            language: 'csharp',
+            script:
+                'using System;\n' +
+                'class Program {\n' +
+                '    static void Main(string[] args) {\n' +
+                '        Console.WriteLine("hello world");\n' +
+                '    }\n' +
+                '}\n',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'csharp : print stdin',
+        reqObject: {
+            language: 'csharp',
+            script:
+                'using System;\n' +
+                'class Program {\n' +
+                '    static void Main(string[] args) {\n' +
+                '        string line;\n' +
+                '        while ((line = Console.ReadLine()) != null) {\n' +
+                '            Console.WriteLine(line);\n' +
+                '        }\n' +
+                '    }\n' +
+                '}\n',
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'swift : hello world',
+        reqObject: {
+            language: 'swift',
+            script: 'print("hello world")\n',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'swift : print stdin',
+        reqObject: {
+            language: 'swift',
+            script:
+                'if let input = readLine() {\n' +
+                '    print(input)\n' +
+                '}\n',
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'kotlin : hello world',
+        reqObject: {
+            language: 'kotlin',
+            script:
+                'fun main() {\n' +
+                '    println("hello world")\n' +
+                '}\n',
+        },
+        expectedResponse: {
+            val: 'hello world\n',
+            status: 200,
+            error: 0,
+        },
+    },
+    {
+        name: 'kotlin : print stdin',
+        reqObject: {
+            language: 'kotlin',
+            script:
+                'fun main() {\n' +
+                '    val input = readLine()\n' +
+                '    if (input != null) {\n' +
+                '        println(input)\n' +
+                '    }\n' +
+                '}\n',
+            stdin: '1 2 3',
+        },
+        expectedResponse: {
+            val: '1 2 3\n',
+            status: 200,
+            error: 0,
+        },
+    },
+];
 
 module.exports = { testCases }
